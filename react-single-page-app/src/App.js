@@ -1,23 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { useAuthContext } from "@asgardeo/auth-react";
 
 function App() {
+  const { state, signIn, signOut } = useAuthContext();
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    fetch("/books")
+      .then((response) => response.json())
+      .then((data) => setBooks(data));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div >
+      {state.isAuthenticated ? (
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <ul>
+            <li>{state.username}</li>
+          </ul>
+
+          <button
+            style={{ backgroundColor: "blue", color: "white" }}
+            onClick={() => signOut()}
+          >
+            Logout
+          </button>
+        </div>
+      ) : (
+        <button
+          style={{ backgroundColor: "blue", color: "white" }}
+          onClick={() => signIn()}
         >
-          Learn React
-        </a>
-      </header>
+          Login
+        </button>
+      )}
+
+      <div>
+        <h2 style={{ textAlign: "center" }}>Books</h2>
+        <ul>
+          {books.map((book) => (
+            <li key={book.id}>
+              <div>
+                <h3>{book.title}</h3>
+                <p>Author: {book.author}</p>
+                <p>Status: {book.status}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
