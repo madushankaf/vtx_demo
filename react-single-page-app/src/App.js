@@ -3,7 +3,7 @@ import { useAuthContext } from "@asgardeo/auth-react";
 
 
 function App() {
-  const { state, signIn, signOut } = useAuthContext();
+  const { state, signIn, signOut, getIDToken, getAccessToken } = useAuthContext();
   const [books, setBooks] = useState([]);
   const [newBook, setNewBook] = useState({
     title: "",
@@ -12,16 +12,30 @@ function App() {
   });
 
   useEffect(() => {
-    fetch("/books")
-      .then((response) => response.json())
-      .then((data) => setBooks(data));
-  }, []);
+    const fetchData = async () => {
+      if (state.isAuthenticated) {
+        const token = await getAccessToken();
+        
+        fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1.0/books", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then((response) => response.json())
+          .then((data) => setBooks(data));
+      }
+    };
 
-  const addBook = () => {
-    fetch("/books", {
+    fetchData();
+  }, [state.isAuthenticated]);
+
+  const addBook = async () => {
+    const token = await getAccessToken();
+    fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1.0/books", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(newBook)
     })
