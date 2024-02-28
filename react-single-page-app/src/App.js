@@ -16,7 +16,7 @@ function App() {
       if (state.isAuthenticated) {
         const token = await getAccessToken();
         
-        fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1.0/books", {
+        fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1/books", {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -31,7 +31,7 @@ function App() {
 
   const addBook = async () => {
     const token = await getAccessToken();
-    fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1.0/books", {
+    fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1/books", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
