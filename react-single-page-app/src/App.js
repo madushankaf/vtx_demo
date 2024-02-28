@@ -2,35 +2,49 @@ import React, { useState, useEffect } from "react";
 import { useAuthContext } from "@asgardeo/auth-react";
 
 
+
 function App() {
   const { state, signIn, signOut, getIDToken, getAccessToken } = useAuthContext();
-  const [books, setBooks] = useState([]);
   const [newBook, setNewBook] = useState({
     title: "",
     author: "",
-    status: ""
+    status: "",
+    uuid: ""
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (state.isAuthenticated) {
-        const token = await getAccessToken();
-        
-        fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1/books", {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+  const [books, setBooks] = useState([]);
+  const fetchData = async () => {
+    if (state.isAuthenticated) {
+      const token = await getAccessToken();
+
+      fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1/books", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setBooks(data); // Update books state with fetched data
         })
-          .then((response) => response.json())
-          .then((data) => setBooks(data));
-      }
-    };
+        .catch((error) => {
+          console.error("Error fetching books:", error);
+          // Handle error appropriately
+        });
+    }
+  };
+
+  useEffect(() => {
+
 
     fetchData();
   }, [state.isAuthenticated]);
 
+
+
+  // Inside addBook function
   const addBook = async () => {
     const token = await getAccessToken();
+
     fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1/books", {
       method: "POST",
       headers: {
@@ -42,18 +56,42 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setBooks([...books, ...data]);
+        console.log(data); // Log the data received from the server
+        // Check if data contains required fields (uuid, title, author)
+        if (data.uuid && data.title && data.author) {
+          // If data contains required fields, create a book object with optional status
+          // const newBookData = {
+          //   uuid: data.uuid,
+          //   title: data.title,
+          //   author: data.author,
+          //   status: data.status || "" // Use empty string if status is not provided
+          // };
+
+          // // Update the books state with the new book data
+          // setBooks(...books, data);
+
+          // // Reset the newBook state
+          // setNewBook({
+          //   title: "",
+          //   author: "",
+          //   status: "",
+          //   uuid: ""
+          // });
+          fetchData();
         } else {
-          setBooks([...books, data]);
+          // Handle the case when required fields are missing
+          console.error("Missing required fields in the response:", data);
+          // You may want to display an error message to the user or handle this case differently
         }
-        setNewBook({
-          title: "",
-          author: "",
-          status: ""
-        });
+      })
+      .catch((error) => {
+        console.error("Error adding book:", error);
+        // Handle the error condition appropriately
       });
   };
+
+
+
 
   return (
     <div>
@@ -80,50 +118,84 @@ function App() {
       )}
 
       <div>
-        <h2 style={{ textAlign: "center" }}>Books</h2>
-        <ul>
-          {Object.values(books).map((book) => (
-            <li key={book.uuid}>
-              <div>
-                <h3>{book.title}</h3>
-                <p>Author: {book.author}</p>
-                <p>Status: {book.status}</p>
+        {state.isAuthenticated && (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div style={{ marginBottom: "10px", display: "flex" }}>
+              <div style={{ marginRight: "10px" }}>
+                <input
+                  type="text"
+                  placeholder="Title"
+                  value={newBook.title}
+                  onChange={(e) =>
+                    setNewBook({ ...newBook, title: e.target.value })
+                  }
+                  style={{ padding: "5px" }}
+                />
               </div>
-            </li>
+              <div style={{ marginRight: "10px" }}>
+                <input
+                  type="text"
+                  placeholder="Author"
+                  value={newBook.author}
+                  onChange={(e) =>
+                    setNewBook({ ...newBook, author: e.target.value })
+                  }
+                  style={{ padding: "5px" }}
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Status"
+                  value={newBook.status}
+                  onChange={(e) =>
+                    setNewBook({ ...newBook, status: e.target.value })
+                  }
+                  style={{ padding: "5px" }}
+                />
+              </div>
+            </div>
+            <button
+              onClick={addBook}
+              style={{
+                backgroundColor: "blue",
+                color: "white",
+                padding: "5px 10px",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer"
+              }}
+            >
+              Add a new Book
+            </button>
+          </div>
+        )}
+        <h2 style={{ color: "blue", textAlign: "center" }}>Available Books</h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "20px"
+          }}
+        >
+          {Object.values(books).map((book) => (
+            <div
+              key={book.uuid}
+              style={{
+                border: "1px solid black",
+                padding: "10px",
+                backgroundColor: "lightblue"
+              }}
+            >
+              <h3>{book.title}</h3>
+              <p>Author: {book.author}</p>
+              <p>Status: {book.status}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
 
-      {state.isAuthenticated && (
-        <div>
-          <h2>Add a Book</h2>
-          <input
-            type="text"
-            placeholder="Title"
-            value={newBook.title}
-            onChange={(e) =>
-              setNewBook({ ...newBook, title: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            placeholder="Author"
-            value={newBook.author}
-            onChange={(e) =>
-              setNewBook({ ...newBook, author: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            placeholder="Status"
-            value={newBook.status}
-            onChange={(e) =>
-              setNewBook({ ...newBook, status: e.target.value })
-            }
-          />
-          <button onClick={addBook}>Add Book</button>
-        </div>
-      )}
+
     </div>
   );
 }
