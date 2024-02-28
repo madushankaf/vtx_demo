@@ -97,12 +97,15 @@ function App() {
     <div>
       {state.isAuthenticated ? (
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <ul>
-            <li>{state.username}</li>
-          </ul>
-
           <button
-            style={{ backgroundColor: "blue", color: "white" }}
+            style={{
+              backgroundColor: "lightblue",
+              color: "white",
+              padding: "10px 20px",
+              borderRadius: "10px",
+              marginTop: "10px",
+              marginLeft: "10px"
+            }}
             onClick={() => signOut()}
           >
             Logout
@@ -110,7 +113,14 @@ function App() {
         </div>
       ) : (
         <button
-          style={{ backgroundColor: "blue", color: "white" }}
+          style={{
+            backgroundColor: "lightblue",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "10px",
+            marginTop: "10px",
+            marginLeft: "10px"
+          }}
           onClick={() => signIn()}
         >
           Login
