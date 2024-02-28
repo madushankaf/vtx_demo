@@ -41,7 +41,11 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setBooks([...books, data]);
+        if (Array.isArray(data)) {
+          setBooks([...books, ...data]);
+        } else {
+          setBooks([...books, data]);
+        }
         setNewBook({
           title: "",
           author: "",
