@@ -34,6 +34,7 @@ function App() {
     fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1/books", {
       method: "POST",
       headers: {
+        "accept": "*/*",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
