@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "@asgardeo/auth-react";
-import React, { useState, useEffect } from "react";
-import { useAuthContext } from "@asgardeo/auth-react";
+
 
 function App() {
   const { state, signIn, signOut } = useAuthContext();
