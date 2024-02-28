@@ -77,8 +77,8 @@ function App() {
       <div>
         <h2 style={{ textAlign: "center" }}>Books</h2>
         <ul>
-          {books.map((book) => (
-            <li key={book.id}>
+          {Object.values(books).map((book) => (
+            <li key={book.uuid}>
               <div>
                 <h3>{book.title}</h3>
                 <p>Author: {book.author}</p>
