@@ -26,7 +26,7 @@ function App() {
     setIsLoading(true);
     try {
       const token = await getAccessToken();
-      const response = await fetch(`https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/search-service/books-031/v1?q=${query}`, {
+      const response = await fetch(`https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/search-service/books-031/v1?book=${query}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -39,7 +39,7 @@ function App() {
         try {
           fetchRating(data[i].title).then((rating) => {
             console.log(rating);
-            data[i].rating = rating;
+            data[i].rating = rating.rating;
           });
         } catch (error) {
           console.error("Error fetching rating:", error);
