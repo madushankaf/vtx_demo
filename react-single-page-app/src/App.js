@@ -322,7 +322,7 @@ function App() {
             >
               <h3>{book.title}</h3>
               <p>Author: {book.author}</p>
-              <p>Status: {book.status}</p>
+              {/* <p>Status: {book.status}</p> */}
             </div>
           ))}
         </div>
