@@ -113,7 +113,7 @@ function App() {
 
       {state.isAuthenticated ? (
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <h3 style={{ marginRight: "10px" }}>Welcome, {username}</h3>
+            <h3 style={{ marginRight: "10px", color: "blue" }}>Welcome, {username}</h3>
           <button
             style={{
               backgroundColor: "lightblue",
