@@ -168,12 +168,13 @@ function App() {
       <div>
         {state.isAuthenticated && (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div style={{ marginBottom: "10px", display: "flex" }}>
-              <div style={{ marginRight: "10px" }}>
-                <div >
-                  <h1>Book Search</h1>
+            <div >
+            <h3 style={{ color: "blue", textAlign: "center" }}>Search</h3>
                   <SearchBox />
                 </div>
+            <div style={{ marginBottom: "10px", display: "flex" }}>
+              <div style={{ marginRight: "10px" }}>
+                
                 <input
                   type="text"
                   placeholder="Title"
