@@ -35,10 +35,43 @@ function App() {
         throw new Error('Failed to fetch books');
       }
       const data = await response.json();
+      for (let i = 0; i < data.length; i++) {
+        try {
+          fetchRating(data[i].title).then((rating) => {
+            console.log(rating);
+            data[i].rating = rating;
+          });
+        } catch (error) {
+          console.error("Error fetching rating:", error);
+        }
+      }
       setSearchBooks(data);
       setError(null);
     } catch (error) {
       console.error("Error fetching books:", error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchRating = async (bookName) => {
+    setIsLoading(true);
+    try {
+      const token = await getAccessToken();
+      const response = await fetch(`https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/rating-service/endpoint-8090-8b1/v1/rating?book=${bookName}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch rating');
+      }
+      const data = await response.json();
+      setSearchBooks(data);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching ratings:", error);
       setError(error.message);
     } finally {
       setIsLoading(false);
@@ -322,7 +355,7 @@ function App() {
             >
               <h3>{book.title}</h3>
               <p>Author: {book.author}</p>
-              {/* <p>Status: {book.status}</p> */}
+                <p style={{ color: "green" }}>Rating: {book.rating} / 10</p>
             </div>
           ))}
         </div>
