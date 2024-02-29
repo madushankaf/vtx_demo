@@ -9,7 +9,7 @@ function App() {
   const [newBook, setNewBook] = useState({
     title: "",
     author: "",
-    status: "",
+    status: "read",
     uuid: ""
   });
   const [searchQuery, setSearchQuery] = useState('');
@@ -186,7 +186,11 @@ function App() {
                 value={searchQuery}
                 onChange={(e) => {
                   handleSearchInputChange(e);
-                  fetchBooks(); // Call fetchBooks function when the text changes
+                  if (e.target.value === "") {
+                    setSearchBooks([]); // Clear the searchBooks array when the search text is blank
+                  } else {
+                    fetchBooks(); // Call fetchBooks function when the text changes
+                  }
                 }}
                 placeholder="Search books..."
                 style={{
@@ -203,7 +207,13 @@ function App() {
                 <pre contentEditable={true} style={{ backgroundColor: "lightgray", padding: "10px", borderRadius: "5px" }}>
                   <ul style={{ listStyleType: "none", padding: "0" }}>
                     {searchBooks.map((book) => (
-                      <li key={book.id} style={{ marginBottom: "5px" }}>{book.title}</li>
+                      <li
+                        key={book.id}
+                        style={{ marginBottom: "5px", cursor: "pointer" }}
+                        onClick={() => setNewBook({ ...newBook, title: book.title , author: book.author})}
+                      >
+                        {book.title}
+                      </li>
                     ))}
                   </ul>
                 </pre>
@@ -233,7 +243,7 @@ function App() {
                   style={{ padding: "5px" }}
                 />
               </div>
-              <div>
+              {/* <div>
                 <input
                   type="text"
                   placeholder="Status"
@@ -243,7 +253,7 @@ function App() {
                   }
                   style={{ padding: "5px" }}
                 />
-              </div>
+              </div> */}
             </div>
             <Modal
               show={showPopup}
