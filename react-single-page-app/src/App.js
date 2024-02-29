@@ -18,6 +18,9 @@ function App() {
   const [username, setUsername] = useState(""); // State variable for username
   const [showPopup, setShowPopup] = useState(false); // State variable for modal visibility
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [searchBooks, setSearchBooks] = useState([]);
 
   const fetchBooks = async (query) => {
     setIsLoading(true);
@@ -32,7 +35,7 @@ function App() {
         throw new Error('Failed to fetch books');
       }
       const data = await response.json();
-      setBooks(data);
+      setSearchBooks(data);
       setError(null);
     } catch (error) {
       console.error("Error fetching books:", error);
@@ -40,6 +43,10 @@ function App() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
   const fetchData = async () => {
@@ -177,7 +184,10 @@ function App() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={handleSearchInputChange}
+                onChange={(e) => {
+                  handleSearchInputChange(e);
+                  fetchBooks(); // Call fetchBooks function when the text changes
+                }}
                 placeholder="Search books..."
                 style={{
                   padding: "5px",
@@ -189,10 +199,10 @@ function App() {
               />
               {isLoading && <p>Loading...</p>}
               {error && <p>Error: {error}</p>}
-              {books.length > 0 && (
+              {searchBooks.length > 0 && (
                 <pre contentEditable={true} style={{ backgroundColor: "lightgray", padding: "10px", borderRadius: "5px" }}>
                   <ul style={{ listStyleType: "none", padding: "0" }}>
-                    {books.map((book) => (
+                    {searchBooks.map((book) => (
                       <li key={book.id} style={{ marginBottom: "5px" }}>{book.title}</li>
                     ))}
                   </ul>
