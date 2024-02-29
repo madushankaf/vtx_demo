@@ -84,7 +84,7 @@ function App() {
         } else {
           // Handle the case when required fields are missing
           console.error("Missing required fields in the response:", data);
-          setErrorMessage(`Error adding book: ${error}`); // Set error message
+          setErrorMessage(`Error adding book: ${data}`); // Set error message
           setShowPopup(true);
           // You may want to display an error message to the user or handle this case differently
         }
