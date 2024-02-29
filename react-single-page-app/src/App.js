@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 
 
 function App() {
-  const { state, signIn, signOut, getIDToken, getAccessToken } = useAuthContext();
+  const { state, signIn, signOut, getIDToken, getAccessToken, getBasicUserInfo } = useAuthContext();
   const [newBook, setNewBook] = useState({
     title: "",
     author: "",
@@ -14,6 +14,7 @@ function App() {
   });
 
   const [books, setBooks] = useState([]);
+  const [username, setUsername] = useState(""); // State variable for username
   const [showPopup, setShowPopup] = useState(false); // State variable for modal visibility
   const [errorMessage, setErrorMessage] = useState("");
   const fetchData = async () => {
@@ -38,7 +39,14 @@ function App() {
 
   useEffect(() => {
 
+    if (state.isAuthenticated) {
+      getBasicUserInfo().then((basicUserDetails) => {
+        console.log(basicUserDetails);
+        setUsername(basicUserDetails.username);
 
+      }).catch((error) => {
+      })
+    }
     fetchData();
   }, [state.isAuthenticated]);
 
@@ -102,9 +110,10 @@ function App() {
 
   return (
     <div>
-      
+
       {state.isAuthenticated ? (
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <h3 style={{ marginRight: "10px" }}>Welcome, {username}</h3>
           <button
             style={{
               backgroundColor: "lightblue",
