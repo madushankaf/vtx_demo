@@ -35,16 +35,6 @@ function App() {
         throw new Error('Failed to fetch books');
       }
       const data = await response.json();
-      for (let i = 0; i < data.length; i++) {
-        try {
-          fetchRating(data[i].title).then((rating) => {
-            console.log(rating);
-            data[i].rating = rating.rating;
-          });
-        } catch (error) {
-          console.error("Error fetching rating:", error);
-        }
-      }
       setSearchBooks(data);
       setError(null);
     } catch (error) {
@@ -93,6 +83,16 @@ function App() {
       })
         .then((response) => response.json())
         .then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            try {
+              fetchRating(data[i].title).then((rating) => {
+                console.log(rating);
+                data[i].rating = rating.rating;
+              });
+            } catch (error) {
+              console.error("Error fetching rating:", error);
+            }
+          }
           setBooks(data); // Update books state with fetched data
         })
         .catch((error) => {
