@@ -68,7 +68,7 @@ function App() {
         throw new Error('Failed to fetch rating');
       }
       const data = await response.json();
-      setSearchBooks(data);
+      return data;
       setError(null);
     } catch (error) {
       console.error("Error fetching ratings:", error);
