@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuthContext } from "@asgardeo/auth-react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import SearchBox from "./search";
 
 
 function App() {
@@ -22,6 +23,26 @@ function App() {
       const token = await getAccessToken();
 
       fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/books-api/books-rest-endpoint-d70/v1/books", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setBooks(data); // Update books state with fetched data
+        })
+        .catch((error) => {
+          console.error("Error fetching books:", error);
+          // Handle error appropriately
+        });
+    }
+  };
+
+  const fetchBooks = async () => {
+    if (state.isAuthenticated) {
+      const token = await getAccessToken();
+
+      fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/search-service/books-031/v1", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -113,7 +134,7 @@ function App() {
 
       {state.isAuthenticated ? (
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <h3 style={{ marginRight: "10px", color: "blue" }}>Welcome, {username}</h3>
+          <h3 style={{ marginRight: "10px", color: "blue" }}>Welcome, {username}</h3>
           <button
             style={{
               backgroundColor: "lightblue",
@@ -149,6 +170,10 @@ function App() {
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div style={{ marginBottom: "10px", display: "flex" }}>
               <div style={{ marginRight: "10px" }}>
+                <div >
+                  <h1>Book Search</h1>
+                  <SearchBox />
+                </div>
                 <input
                   type="text"
                   placeholder="Title"
