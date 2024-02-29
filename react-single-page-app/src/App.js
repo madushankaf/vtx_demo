@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useAuthContext } from "@asgardeo/auth-react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import SearchBox from "./search";
 
 
 function App() {
@@ -13,11 +12,36 @@ function App() {
     status: "",
     uuid: ""
   });
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [books, setBooks] = useState([]);
   const [username, setUsername] = useState(""); // State variable for username
   const [showPopup, setShowPopup] = useState(false); // State variable for modal visibility
   const [errorMessage, setErrorMessage] = useState("");
+
+  const fetchBooks = async (query) => {
+    setIsLoading(true);
+    try {
+      const token = await getAccessToken();
+      const response = await fetch(`https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/search-service/books-031/v1?q=${query}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch books');
+      }
+      const data = await response.json();
+      setBooks(data);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching books:", error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const fetchData = async () => {
     if (state.isAuthenticated) {
       const token = await getAccessToken();
@@ -38,25 +62,6 @@ function App() {
     }
   };
 
-  const fetchBooks = async () => {
-    if (state.isAuthenticated) {
-      const token = await getAccessToken();
-
-      fetch("https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/search-service/books-031/v1", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setBooks(data); // Update books state with fetched data
-        })
-        .catch((error) => {
-          console.error("Error fetching books:", error);
-          // Handle error appropriately
-        });
-    }
-  };
 
   useEffect(() => {
 
@@ -168,13 +173,35 @@ function App() {
       <div>
         {state.isAuthenticated && (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div >
-            <h3 style={{ color: "blue", textAlign: "center" }}>Search</h3>
-                  <SearchBox />
-                </div>
+            <div style={{ marginTop: "20px" }}>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                placeholder="Search books..."
+                style={{
+                  padding: "5px",
+                  marginBottom: "10px",
+                  width: "300px",
+                  borderRadius: "5px",
+                  border: "1px solid gray"
+                }}
+              />
+              {isLoading && <p>Loading...</p>}
+              {error && <p>Error: {error}</p>}
+              {books.length > 0 && (
+                <pre contentEditable={true} style={{ backgroundColor: "lightgray", padding: "10px", borderRadius: "5px" }}>
+                  <ul style={{ listStyleType: "none", padding: "0" }}>
+                    {books.map((book) => (
+                      <li key={book.id} style={{ marginBottom: "5px" }}>{book.title}</li>
+                    ))}
+                  </ul>
+                </pre>
+              )}
+            </div>
             <div style={{ marginBottom: "10px", display: "flex" }}>
               <div style={{ marginRight: "10px" }}>
-                
+
                 <input
                   type="text"
                   placeholder="Title"
