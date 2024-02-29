@@ -5,7 +5,7 @@
             <!-- Use base URL in the endpoint -->
             <send>
                 <endpoint>
-                    <http method="GET" uri-template="$env:BASE_URL"/>
+                    <http method="GET" uri-template="$env:BASE_URL/books">
                 </endpoint>
             </send>
         </inSequence>
