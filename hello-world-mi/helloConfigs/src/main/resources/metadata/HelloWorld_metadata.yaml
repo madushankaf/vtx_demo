@@ -4,7 +4,7 @@ name : "Books API"
 displayName : "Books"
 description: "Sample API"
 version: "1.0.0"
-serviceUrl: "https://{host}:{port}/books"
+serviceUrl: "https://{host}:{port}/"
 definitionType: "OAS3"
 securityType: "BASIC"
 mutualSSLEnabled: false

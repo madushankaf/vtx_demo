@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<api xmlns="http://ws.apache.org/ns/synapse" name="Books" context="/books">
-    <resource methods="GET">
+<api xmlns="http://ws.apache.org/ns/synapse" name="Books" context="/">
+    <resource methods="GET" uri-template="/books">
         <inSequence>
             <!-- Use base URL in the endpoint -->
             <send>
                 <endpoint>
-                    <http method="GET" uri-template="$env:BASE_URL/books"/>
+                    <http method="GET" uri-template="$env:BASE_URL"/>
                 </endpoint>
             </send>
         </inSequence>
