@@ -13,7 +13,7 @@ const Index = () => (
           signOutRedirectURL: "https://bff55def-1355-41b6-b64c-fa71a000635f.e1-us-east-azure.choreoapps.dev/",
           clientID: "Ukf2294_D_KHGLFXGvtu8xoOyCEa",
           baseUrl: "https://api.asgardeo.io/t/vtxdemo",
-          scope: [ "openid","profile", "urn:vtxdemo:booksapibooksrestendpoint:add_book", "urn:vtxdemo:booksapibooksrestendpoint:delete_book", "urn:vtxdemo:booksapibooksrestendpoint:get_book", "urn:vtxdemo:booksapibooksrestendpoint:modify_book" ]
+          scope: [ "openid","profile","email", "urn:vtxdemo:booksapibooksrestendpoint:add_book", "urn:vtxdemo:booksapibooksrestendpoint:delete_book", "urn:vtxdemo:booksapibooksrestendpoint:get_book", "urn:vtxdemo:booksapibooksrestendpoint:modify_book" ]
       } }
   >
         <React.StrictMode>
