@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<api xmlns="http://ws.apache.org/ns/synapse" name="Books" context="/">
+<api context="/default" name="Books" xmlns="http://ws.apache.org/ns/synapse">
     <resource methods="GET" uri-template="/books">
         <inSequence>
-            <!-- Use base URL in the endpoint -->
             <send>
                 <endpoint>
-                    <http method="GET" uri-template="$env:BASE_URL/books">
+                    <http method="get" uri-template="$env:BASE_URL">
+                        <suspendOnFailure>
+                            <initialDuration>-1</initialDuration>
+                            <progressionFactor>1</progressionFactor>
+                        </suspendOnFailure>
+                        <markForSuspension>
+                            <retriesBeforeSuspension>0</retriesBeforeSuspension>
+                        </markForSuspension>
+                    </http>
                 </endpoint>
             </send>
         </inSequence>

@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-  title: HelloWorld
+  title: Books
   description: API Definition of Books API
   version: 1.0.0
 servers:
-- url: http://localhost:8290
+- url: /defaulth/defaultt/defaultt/defaultp/default:/default//default//defaultl/defaulto/defaultc/defaulta/defaultl/defaulth/defaulto/defaults/defaultt/default:/default8/default2/default9/default0/default
 paths:
   /books:
     get:
