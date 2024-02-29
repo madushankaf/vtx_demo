@@ -4,7 +4,7 @@ info:
   description: API Definition of Books API
   version: 1.0.0
 servers:
-- url: /defaulth/defaultt/defaultt/defaultp/default:/default//default//defaultl/defaulto/defaultc/defaulta/defaultl/defaulth/defaulto/defaults/defaultt/default:/default8/default2/default9/default0/default
+- url: http://localhost:8290
 paths:
   /books:
     get:
