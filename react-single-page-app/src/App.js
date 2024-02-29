@@ -86,7 +86,7 @@ function App() {
       })
       .catch((error) => {
         console.error("Error adding book:", error);
-        // Handle the error condition appropriately
+        alert("Error adding book: " + error); // Display error message in a pop-up
       });
   };
 
