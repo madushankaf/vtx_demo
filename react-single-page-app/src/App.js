@@ -10,7 +10,8 @@ function App() {
     title: "",
     author: "",
     status: "read",
-    uuid: ""
+    uuid: "",
+    rating: ""
   });
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -21,6 +22,25 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchBooks, setSearchBooks] = useState([]);
+
+  const RatingDisplay = ({ bookTitle }) => {
+    const [rating, setRating] = useState(null);
+
+    useEffect(() => {
+      const fetchRatingData = async () => {
+        try {
+          const response = await fetchRating(bookTitle);
+          setRating(response.rating);
+        } catch (error) {
+          console.error("Error fetching rating:", error);
+        }
+      };
+
+      fetchRatingData();
+    }, [bookTitle]);
+
+    return <p style={{ color: "green" }}>Rating: {rating || "N/A"} / 10</p>;
+  };
 
   const fetchBooks = async (query) => {
     setIsLoading(true);
@@ -46,7 +66,7 @@ function App() {
   };
 
   const fetchRating = async (bookName) => {
-    setIsLoading(true);
+
     try {
       const token = await getAccessToken();
       const response = await fetch(`https://47d151e6-e041-4ec4-a2a9-549f8a542a7a-dev.e1-us-east-azure.choreoapis.dev/dyzg/rating-service/endpoint-8090-8b1/v1/rating?book=${bookName}`, {
@@ -58,13 +78,14 @@ function App() {
         throw new Error('Failed to fetch rating');
       }
       const data = await response.json();
+      console.log(data);
       return data;
-      setError(null);
+
     } catch (error) {
       console.error("Error fetching ratings:", error);
       setError(error.message);
     } finally {
-      setIsLoading(false);
+
     }
   };
 
@@ -82,17 +103,18 @@ function App() {
         }
       })
         .then((response) => response.json())
-        .then((data) => {
-          for (let i = 0; i < data.length; i++) {
-            try {
-              fetchRating(data[i].title).then((rating) => {
-                console.log(rating);
-                data[i].rating = rating.rating;
-              });
-            } catch (error) {
-              console.error("Error fetching rating:", error);
-            }
-          }
+        .then(async (data) => {
+
+          // Object.values(data).map(async (book) => {
+          //   try {
+          //     const rating = await fetchRating(book.title);
+          //     book.rating = rating.rating;
+          //     console.log(book);
+          //   } catch (error) {
+          //     console.error("Error fetching rating:", error);
+          //   }
+          // });
+
           setBooks(data); // Update books state with fetched data
         })
         .catch((error) => {
@@ -107,7 +129,6 @@ function App() {
 
     if (state.isAuthenticated) {
       getBasicUserInfo().then((basicUserDetails) => {
-        console.log(basicUserDetails);
         setUsername(basicUserDetails.email);
 
       }).catch((error) => {
@@ -133,7 +154,6 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data); // Log the data received from the server
         // Check if data contains required fields (uuid, title, author)
         if (data.uuid && data.title && data.author) {
           // If data contains required fields, create a book object with optional status
@@ -243,7 +263,7 @@ function App() {
                       <li
                         key={book.id}
                         style={{ marginBottom: "5px", cursor: "pointer" }}
-                        onClick={() => setNewBook({ ...newBook, title: book.title , author: book.author})}
+                        onClick={() => setNewBook({ ...newBook, title: book.title, author: book.author })}
                       >
                         {book.title}
                       </li>
@@ -355,7 +375,7 @@ function App() {
             >
               <h3>{book.title}</h3>
               <p>Author: {book.author}</p>
-                <p style={{ color: "green" }}>Rating: {book.rating} / 10</p>
+              <RatingDisplay bookTitle={book.title} />
             </div>
           ))}
         </div>
