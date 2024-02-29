@@ -84,7 +84,7 @@ function App() {
         } else {
           // Handle the case when required fields are missing
           console.error("Missing required fields in the response:", data);
-          setErrorMessage(`Error adding book: ${data}`); // Set error message
+          setErrorMessage(`${data.error_message} : ${data.error_description}`); // Set error message
           setShowPopup(true);
           // You may want to display an error message to the user or handle this case differently
         }
@@ -173,7 +173,16 @@ function App() {
                 />
               </div>
             </div>
-            <Modal show={showPopup} onHide={handleClosePopup}>
+            <Modal
+              show={showPopup}
+              onHide={handleClosePopup}
+              centered // Add this style to center the modal
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
               <Modal.Header closeButton>
                 <Modal.Title>Error Adding Book</Modal.Title>
               </Modal.Header>
@@ -181,7 +190,18 @@ function App() {
                 <p>{errorMessage}</p>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleClosePopup}>
+                <Button
+                  variant="secondary"
+                  onClick={handleClosePopup}
+                  style={{
+                    backgroundColor: "gray",
+                    color: "white",
+                    padding: "5px 10px",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer"
+                  }}
+                >
                   Close
                 </Button>
               </Modal.Footer>
