@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<api context="/default" name="Books" xmlns="http://ws.apache.org/ns/synapse">
-    <resource methods="GET" uri-template="/books">
+<api context="/HelloWorld" name="HelloWorld" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="GET">
         <inSequence>
-            <send>
-                <endpoint>
-                    <http method="get" uri-template="$env:BASE_URL">
-                        <suspendOnFailure>
-                            <initialDuration>-1</initialDuration>
-                            <progressionFactor>1</progressionFactor>
-                        </suspendOnFailure>
-                        <markForSuspension>
-                            <retriesBeforeSuspension>0</retriesBeforeSuspension>
-                        </markForSuspension>
-                    </http>
-                </endpoint>
-            </send>
+            <payloadFactory media-type="json">
+                <format>{"Hello":"World"}</format>
+                <args/>
+            </payloadFactory>
+            <respond/>
         </inSequence>
-        <outSequence>
-            <send/>
-        </outSequence>
+        <outSequence/>
         <faultSequence/>
     </resource>
 </api>
