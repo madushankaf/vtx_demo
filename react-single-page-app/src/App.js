@@ -42,7 +42,7 @@ function App() {
     if (state.isAuthenticated) {
       getBasicUserInfo().then((basicUserDetails) => {
         console.log(basicUserDetails);
-        setUsername(basicUserDetails.username);
+        setUsername(basicUserDetails.email);
 
       }).catch((error) => {
       })
