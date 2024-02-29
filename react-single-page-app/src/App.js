@@ -13,6 +13,8 @@ function App() {
   });
 
   const [books, setBooks] = useState([]);
+  const [showPopup, setShowPopup] = useState(false); // State variable for modal visibility
+  const [errorMessage, setErrorMessage] = useState("");
   const fetchData = async () => {
     if (state.isAuthenticated) {
       const token = await getAccessToken();
@@ -86,15 +88,18 @@ function App() {
       })
       .catch((error) => {
         console.error("Error adding book:", error);
-        alert("Error adding book: " + error); // Display error message in a pop-up
+        setErrorMessage(`Error adding book: ${error}`); // Set error message
+        setShowPopup(true);
       });
   };
 
+  const handleClosePopup = () => setShowPopup(false);
 
 
 
   return (
     <div>
+      
       {state.isAuthenticated ? (
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <button
@@ -165,6 +170,19 @@ function App() {
                 />
               </div>
             </div>
+            <Modal show={showPopup} onHide={handleClosePopup}>
+              <Modal.Header closeButton>
+                <Modal.Title>Error Adding Book</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p>{errorMessage}</p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClosePopup}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
             <button
               onClick={addBook}
               style={{
