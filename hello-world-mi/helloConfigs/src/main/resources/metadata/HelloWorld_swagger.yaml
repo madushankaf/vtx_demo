@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-  title: HelloWorld
-  description: API Definition of HelloWorld
+  title: Books
+  description: API Definition of Books
   version: 1.0.0
 servers:
-- url: http://localhost:8290/HelloWorld
+- url: http://localhost:8290/Books
 paths:
   /:
     post:

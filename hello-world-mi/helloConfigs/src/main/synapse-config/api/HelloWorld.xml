@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<api context="/HelloWorld" name="HelloWorld" xmlns="http://ws.apache.org/ns/synapse">
+<api context="/Books" name="Books" xmlns="http://ws.apache.org/ns/synapse">
     <resource methods="GET">
         <inSequence>
             <payloadFactory media-type="json">
