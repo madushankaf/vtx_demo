@@ -3,7 +3,7 @@
     <resource methods="GET">
         <inSequence>
             <payloadFactory media-type="json">
-                <format>[{"title":"Ac-cent-tchu-ate the Positive","author":"Alfred Block","uuid":"4e117f27-c5b1-407f-b51a-d6027adb609a","id":"1"},{"title":"Just My Imagination (Running Away With Me)","author":"Tina O'Hara","uuid":"ce72c070-978a-4152-92ec-3cc4dd382c54","id":"43"},{"title":"She Drives Me Crazy","author":"Mrs. Janet Greenfelder","uuid":"912356a6-a183-4489-9e9a-8a6021820e2e","id":"44"}]</format>
+                <format>[{"title":"Ac-cent-tchu-ate the Positive","author":"Alfred Block","uuid":"4e117f27-c5b1-407f-b51a-d6027adb609a","id":"1"},{"title":"Just My Imagination (Running Away With Me)","author":"Tina O'Hara","uuid":"ce72c070-978a-4152-92ec-3cc4dd382c54","id":"43"},{"title":"Driving a Tesla","author":"Mrs. Janet Greenfelder","uuid":"912356a6-a183-4489-9e9a-8a6021820e2e","id":"44"}]</format>
                 <args/>
             </payloadFactory>
             <respond/>
